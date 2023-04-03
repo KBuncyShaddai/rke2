@@ -16,14 +16,15 @@ sudo sed -i -e "/AllowAgentForwarding/,/VersionAddendum/s/.*PermitTunnel.*/Permi
 sudo service sshd restart
 
 
-curl -sfL https://get.rke2.io | sudo sh
+curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL="v1.24"   sudo -E sh
 sudo mkdir -p /etc/rancher/rke2
 sudo cp ./config.yaml /etc/rancher/rke2
 sudo systemctl enable rke2-server.service
 sudo  systemctl start rke2-server.service
 
-cp /var/lib/rancher/rke2/bin/kubectl /usr/local/bin
+sudo cp /var/lib/rancher/rke2/bin/kubectl /usr/local/bin
 
 export PATH=$PATH:/opt/rke2/bin:/var/lib/rancher/rke2/bin
 
-export KUBECONFIG=/etc/rancher/rke2/rke2.yaml
+export KUBECONFIG=~/.kube/config
+sudo cp /etc/rancher/rke2/rke2.yaml /home/dkube/.kube/config

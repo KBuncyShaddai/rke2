@@ -6,6 +6,8 @@ etcd:
   disableSnapshots: false
 machineGlobalConfig:
   cni: canal
+kubelet-arg:
+  - "max-pods=250"
 upgradeStrategy:
   controlPlaneConcurrency: '1'
   controlPlaneDrainOptions:
