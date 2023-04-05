@@ -33,7 +33,6 @@ sudo service sshd restart
 curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=$kubernetes_version  INSTALL_RKE2_TYPE=$node_type	 sudo -E sh
 sudo systemctl enable rke2-$node_type.service
 sudo mkdir -p /etc/rancher/rke2
-sudo cp ./$node_type-config.yaml /etc/rancher/rke2/config.yaml
 # Config will be applied from /etc/rancher/rke2/config.yaml
 sudo  systemctl start rke2-$node_type.service
 
