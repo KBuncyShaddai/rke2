@@ -1,0 +1,26 @@
+server: https://192.168.200.104:9345
+token: K1054c95ecfe7841ed96f07db015f4a917f71f06838977bbe0d0dec6faf1f1c6c8d::server:98c0dd9f4bc9aa8b9936d01c5290d974
+chartValues:
+  rke2-calico: {}
+authentication:
+  strategy: x509
+etcd:
+  disableSnapshots: false
+node-label:
+  - "node-role=worker"
+machineGlobalConfig:
+  cni: canal
+kubelet-arg:
+  - "max-pods=250"
+upgradeStrategy:
+  controlPlaneConcurrency: '1'
+  controlPlaneDrainOptions:
+  deleteEmptyDirData: true
+  disableEviction: false
+  enabled: false
+  force: false
+  gracePeriod: -1
+  ignoreDaemonSets: true
+  skipWaitForDeleteTimeoutSeconds: 0
+  timeout: 120
+

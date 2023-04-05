@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# Variables
+
+node_type=${1-:"server"}  # "server" / "agent"
+kubernetes_version="v1.24"
+
+
+# -----------------------
+#    Network Setup
+#------------------------
+
 sudo systemctl disable apparmor.service
 sudo systemctl disable firewalld.service
 sudo systemctl disable ufw
@@ -16,15 +26,25 @@ sudo sed -i -e "/AllowAgentForwarding/,/VersionAddendum/s/.*PermitTunnel.*/Permi
 sudo service sshd restart
 
 
-curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL="v1.24"   sudo -E sh
+#--------------------
+#  RKE Setup
+#--------------------
+
+curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=$kubernetes_version  INSTALL_RKE2_TYPE=$node_type	 sudo -E sh
+sudo systemctl enable rke2-$node_type.service
 sudo mkdir -p /etc/rancher/rke2
-sudo cp ./config.yaml /etc/rancher/rke2
-sudo systemctl enable rke2-server.service
-sudo  systemctl start rke2-server.service
+sudo cp ./$node_type-config.yaml /etc/rancher/rke2/config.yaml
+sudo  systemctl start rke2-$node_type.service
 
-sudo cp /var/lib/rancher/rke2/bin/kubectl /usr/local/bin
 
-export PATH=$PATH:/opt/rke2/bin:/var/lib/rancher/rke2/bin
+#--------------------
+#  Kubeconfig
+#--------------------
 
-export KUBECONFIG=~/.kube/config
-sudo cp /etc/rancher/rke2/rke2.yaml /home/dkube/.kube/config
+if [[ "$node_type" == "server" ]] 
+then
+	sudo cp /var/lib/rancher/rke2/bin/kubectl /usr/local/bin
+	export PATH=$PATH:/opt/rke2/bin:/var/lib/rancher/rke2/bin
+	sudo cp /etc/rancher/rke2/rke2.yaml /home/dkube/.kube/config
+	export KUBECONFIG=~/.kube/config
+fi
