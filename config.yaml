@@ -1,22 +1,5 @@
-chartValues:
-  rke2-calico: {}
-authentication:
-  strategy: x509
-etcd:
-  disableSnapshots: false
-machineGlobalConfig:
-  cni: canal
+cni: canal
 kubelet-arg:
   - "max-pods=250"
-upgradeStrategy:
-  controlPlaneConcurrency: '1'
-  controlPlaneDrainOptions:
-  deleteEmptyDirData: true
-  disableEviction: false
-  enabled: false
-  force: false
-  gracePeriod: -1
-  ignoreDaemonSets: true
-  skipWaitForDeleteTimeoutSeconds: 0
-  timeout: 120
-
+debug: True
+etcd-disable-snapshots: True
