@@ -4,7 +4,7 @@
 
 MASTER_SSH_KEY=/home/ubuntu/keys/104/jenkins-rke.pem
 MASTER_SSH_USER=dkube
-MASTER_NODE=192.168.200.104
+MASTER_NODE=$RKE2_HOST
 CONFIG_FILE=./config.yaml
 
 AGENT_NODES=()
@@ -29,6 +29,7 @@ function setAgentConfig {
 
 function copyConfig {
   scp -i $SSH_KEY $CONFIG_FILE  $SSH_USER@$NODE:/tmp/config.yaml
+  ssh -i $SSH_KEY $SSH_USER@$NODE sudo mkdir -p /etc/rancher/rke2
   ssh -i $SSH_KEY $SSH_USER@$NODE sudo cp /tmp/config.yaml /etc/rancher/rke2/config.yaml
   green_printf "Copied config to $NODE_TYPE node $NODE.\n"
 }
