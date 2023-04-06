@@ -50,7 +50,7 @@ function setupMasterNode {
   NODE=$MASTER_NODE
   NODE_TYPE=server
 
-  setSeverConfig
+  setServerConfig
   CONFIG_FILE=server-config.yaml
   copyConfig
   installRKE2
