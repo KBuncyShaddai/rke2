@@ -30,7 +30,7 @@ function setAgentConfig {
 function setServerConfig {
   cat config.yaml > server-config.yaml
   echo node-ip: $NODE >> server-config.yaml
-  greeb_printf "Configured server-config.yaml"
+  green_printf "Configured server-config.yaml"
 }
 
 function copyConfig {
