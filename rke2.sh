@@ -27,6 +27,12 @@ function setAgentConfig {
   green_printf "Configured agent-config.yaml.\n"
 }
 
+function setServerConfig {
+  cat config.yaml > server-config.yaml
+  echo node-ip: $NODE >> server-config.yaml
+  greeb_printf "Configured server-config.yaml"
+}
+
 function copyConfig {
   scp -i $SSH_KEY $CONFIG_FILE  $SSH_USER@$NODE:/tmp/config.yaml
   ssh -i $SSH_KEY $SSH_USER@$NODE sudo mkdir -p /etc/rancher/rke2
@@ -44,6 +50,8 @@ function setupMasterNode {
   NODE=$MASTER_NODE
   NODE_TYPE=server
 
+  setSeverConfig
+  CONFIG_FILE=server-config.yaml
   copyConfig
   installRKE2
 }
