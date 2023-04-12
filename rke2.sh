@@ -142,4 +142,4 @@ function drke2 {
     uninstallCluster
   fi
 }
-
+$@
