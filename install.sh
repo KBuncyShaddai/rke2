@@ -35,7 +35,11 @@ sudo systemctl enable rke2-$node_type.service
 sudo mkdir -p /etc/rancher/rke2
 # Config will be applied from /etc/rancher/rke2/config.yaml
 sudo  systemctl start rke2-$node_type.service
-
+if [[ $? != 0 ]]
+then
+  echo "Cluster installed failed or timedout.\nExiting......\n"
+  exit
+fi
 
 #--------------------
 #  Kubeconfig

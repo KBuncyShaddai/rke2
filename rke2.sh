@@ -4,13 +4,13 @@
 
 MASTER_SSH_KEY=/home/ubuntu/keys/104/jenkins-rke.pem
 MASTER_SSH_USER=dkube
-MASTER_NODE=$RKE2_HOST
+MASTER_NODE=192.168.200.104
 CONFIG_FILE=./config.yaml
 
-AGENT_NODES=()
-AGENT_SSH_KEYS=()
-AGENT_SSH_USER=()
-AGENT_NODE_TYPE=()
+AGENT_NODES=(192.168.200.107 192.168.200.134 192.168.200.122)
+AGENT_SSH_KEYS=(/home/ubuntu/keys/107/jenkins-rke.pem /home/ubuntu/keys/134/jenkins-rke.pem /home/ubuntu/keys/122/jenkins-rke.pem)
+AGENT_SSH_USERS=(dkube dkube dkube)
+AGENT_NODE_TYPE=(agent agent agent)
 
 function white_printf  { printf "\t\033[1;37m$@\033[0m";  }
 function red_printf    { printf "\t\033[31m$@\033[0m";    }                                                               #
@@ -18,7 +18,11 @@ function green_printf  { printf "\t\033[32m$@\033[0m";    }                     
 function yellow_printf { printf "\t\033[33m$@\033[0m";    }
 
 function setAgentConfig {
-  white_printf	"Fetching token from Server node $NODE.\n"
+  SSH_USER=$MASTER_SSH_USER
+  SSH_KEY=$MASTER_SSH_KEY
+  NODE=$MASTER_NODE
+  
+  yellow_printf	"Fetching token from Server node $NODE.\n"
   token=$(ssh -i $SSH_KEY $SSH_USER@$NODE sudo cat /var/lib/rancher/rke2/server/node-token)
   green_printf "Token fetched.\n"
   cat config.yaml > agent-config.yaml
@@ -34,6 +38,7 @@ function setServerConfig {
 }
 
 function copyConfig {
+  yellow_printf "Copying config to $NODE......\n" 
   scp -i $SSH_KEY $CONFIG_FILE  $SSH_USER@$NODE:/tmp/config.yaml
   ssh -i $SSH_KEY $SSH_USER@$NODE sudo mkdir -p /etc/rancher/rke2
   ssh -i $SSH_KEY $SSH_USER@$NODE sudo cp /tmp/config.yaml /etc/rancher/rke2/config.yaml
@@ -41,7 +46,10 @@ function copyConfig {
 }
 
 function installRKE2 {
-	ssh -i $SSH_KEY $SSH_USER@$NODE 'bash -s' < install.sh $NODE_TYPE
+  copyConfig
+  yellow_printf "Starting rke2 service on $NODE......\n"
+  ssh -i $SSH_KEY $SSH_USER@$NODE 'bash -s' < install.sh $NODE_TYPE
+  green_printf "Setup RKE2 on $NODE successfully\n"
 }
 
 function setupMasterNode {
@@ -52,8 +60,40 @@ function setupMasterNode {
 
   setServerConfig
   CONFIG_FILE=server-config.yaml
-  copyConfig
   installRKE2
 }
 
-setupMasterNode
+function setupAgentNodes {
+  agent_nodes=${#AGENT_NODES[@]}
+  white_printf "Total Agent Nodes    : $agent_nodes.\n\n"
+  if [ $agent_nodes != 0 ]
+  then
+    setAgentConfig
+    CONFIG_FILE=agent-config.yaml
+    yellow_printf "Setting up Agent Nodes\n"
+    c=0
+    while [ $c -lt $agent_nodes ]
+    do
+      SSH_USER=${AGENT_SSH_USERS[$c]}
+      SSH_KEY=${AGENT_SSH_KEYS[$c]}
+      NODE=${AGENT_NODES[$c]}
+      NODE_TYPE=${AGENT_NODE_TYPE[$c]}
+      installRKE2
+      c=`expr $c + 1`
+    done
+  fi
+}
+
+function uninstallRKE2 {
+#  yellow_printf "Starting rke2 service on $NODE......\n"
+  ssh -i $SSH_KEY $SSH_USER@$NODE [ [ -d /usr/local/bin/rke2 ] ] &&  { yellow_printf "\tUninstalling Cluster from $NODE....\n" ; sudo /usr/local/bin/rke2-killall.sh ; sudo /usr/local/bin/rke2-uninstall.sh ;} || echo "No cluster setup on $NODE to Uninstall.\n"
+  green_printf "Uninstalled RKE2 on $NODE successfully\n"
+}
+
+
+function drke2 {
+
+}
+#setupMasterNode
+#setupAgentNodes
+
