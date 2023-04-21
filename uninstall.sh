@@ -35,7 +35,6 @@ sudo rm -rf /etc/ceph \
        /var/run/calico23
 sudo rm -rf /etc/kubernetes/ /var/lib/kubelet/ /var/lib/etcd/
 sudo docker system prune -f
-helm ls -a --all-namespaces | awk 'NR > 1 { print  "-n "$2, $1}' | xargs -L1 helm delete
 sudo systemctl restart docker
 sudo systemctl restart containerd
 
