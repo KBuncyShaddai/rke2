@@ -35,6 +35,7 @@ sudo rm -rf /etc/ceph \
        /var/run/calico23
 sudo rm -rf /etc/kubernetes/ /var/lib/kubelet/ /var/lib/etcd/
 sudo docker system prune -f
+helm ls --all --short | xargs -L1 helm delete --purge
 sudo systemctl restart docker
 sudo systemctl restart containerd
 
