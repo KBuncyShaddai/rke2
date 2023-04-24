@@ -3,4 +3,3 @@ kubelet-arg:
   - "max-pods=250"
 debug: True
 etcd-disable-snapshots: False
-node-label: ["node-role.kubernetes.io/worker=true"]
