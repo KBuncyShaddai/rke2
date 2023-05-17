@@ -48,7 +48,7 @@ function copyConfig {
 function installRKE2 {
   copyConfig
   yellow_printf "Starting rke2 service on $NODE......\n"
-  ssh -i $SSH_KEY $SSH_USER@$NODE 'bash -s' < install.sh $NODE_TYPE
+  ssh -i $SSH_KEY $SSH_USER@$NODE 'bash -s' < sudo install.sh $NODE_TYPE
   green_printf "Setup RKE2 on $NODE successfully\n"
   getNodes
 }
@@ -89,7 +89,7 @@ function setupAgentNodes {
 }
 
 function uninstallRKE2 {
-  ssh -i $SSH_KEY $SSH_USER@$NODE 'bash -s' < uninstall.sh   2> /dev/null
+  ssh -i $SSH_KEY $SSH_USER@$NODE 'bash -s' < sudo uninstall.sh   2> /dev/null
 #  yellow_printf "\tUninstalling Cluster from $NODE....\n" ; sudo /usr/local/bin/rke2-killall.sh ; sudo /usr/local/bin/rke2-uninstall.sh; } || red_printf "No cluster setup on $NODE to Uninstall\n" ; ]
   if [ $? -eq 0 ]
   then
