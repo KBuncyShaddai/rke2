@@ -2,9 +2,11 @@
 
 #RKE2 Uninstall
 
-#sudo /usr/local/bin/rke2-killall.sh
+sudo /usr/local/bin/rke2-killall.sh
 sudo /usr/local/bin/rke2-uninstall.sh
 
+
+#RKE2 Cleanup
 
 systemctl stop rancher-system-agent.service
 systemctl disable rancher-system-agent.service
@@ -15,10 +17,6 @@ rm -f /usr/local/bin/rancher-system-agent
 rm -rf /etc/rancher/
 rm -rf /var/lib/rancher/
 rm -rf /usr/local/bin/rke2*
-
-#RKE2 Cleanup
-curl -s https://raw.githubusercontent.com/rancherlabs/support-tools/master/extended-rancher-2-cleanup/extended-cleanup-rancher2.sh | sudo bash -i -f
-
 
 #DOCKER CLEANUP
 
