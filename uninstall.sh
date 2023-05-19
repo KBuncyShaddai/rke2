@@ -13,6 +13,7 @@ systemctl disable rancher-system-agent.service
 rm -f /etc/systemd/system/rancher-system-agent.service
 rm -f /etc/systemd/system/rancher-system-agent.env
 systemctl daemon-reload
+for mount in $(mount | grep tmpfs | grep '/var/lib/kubelet' | awk '{ print $3 }') /var/lib/kubelet /var/lib/rancher; do sudo umount $mount; done
 rm -f /usr/local/bin/rancher-system-agent
 rm -rf /etc/rancher/
 rm -rf /var/lib/rancher/
