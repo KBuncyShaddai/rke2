@@ -2,8 +2,9 @@
 
 #RKE2 Uninstall
 
-sudo /usr/local/bin/rke2-killall.sh
+
 sudo /usr/local/bin/rke2-uninstall.sh
+#sudo /usr/local/bin/rke2-killall.sh
 
 
 #RKE2 Cleanup
