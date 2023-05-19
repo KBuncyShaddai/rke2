@@ -100,7 +100,7 @@ function setupAgentNodes {
 }
 
 function uninstallRKE2 {
-  ssh -i $SSH_KEY $SSH_USER@$NODE 'sudo bash -s' < uninstall.sh   2> /dev/null
+  ssh -i $SSH_KEY $SSH_USER@$NODE 'sudo bash -s' < uninstall.sh   # 2> /dev/null
 #  yellow_printf "\tUninstalling Cluster from $NODE....\n" ; sudo /usr/local/bin/rke2-killall.sh ; sudo /usr/local/bin/rke2-uninstall.sh; } || red_printf "No cluster setup on $NODE to Uninstall\n" ; ]
   if [ $? -eq 0 ]
   then
