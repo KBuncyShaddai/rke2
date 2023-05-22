@@ -13,10 +13,12 @@ sudo systemctl disable rancher-system-agent.service
 sudo rm -f /etc/systemd/system/rancher-system-agent.service
 sudo rm -f /etc/systemd/system/rancher-system-agent.env
 sudo systemctl daemon-reload
+for mount in $(mount | grep tmpfs | grep '/var/lib/kubelet' | awk '{ print $3 }') /var/lib/kubelet /var/lib/rancher; do sudo umount $mount; done
 sudo rm -f /usr/local/bin/rancher-system-agent
 sudo rm -rf /etc/rancher/
 sudo rm -rf /var/lib/rancher/
 sudo rm -rf /usr/local/bin/rke2*
+
 
 #DOCKER CLEANUP
 
