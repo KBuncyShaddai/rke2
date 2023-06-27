@@ -7,10 +7,10 @@ MASTER_SSH_USER=dkube
 MASTER_NODE=192.168.200.104
 CONFIG_FILE=./config.yaml
 
-AGENT_NODES=(192.168.200.107 192.168.200.134 192.168.200.122)
-AGENT_SSH_KEYS=(/home/ubuntu/keys/107/jenkins-rke.pem /home/ubuntu/keys/134/jenkins-rke.pem /home/ubuntu/keys/122/jenkins-rke.pem)
-AGENT_SSH_USERS=(dkube dkube dkube)
-AGENT_NODE_TYPE=(agent agent agent)
+AGENT_NODES=(192.168.200.107 192.168.200.134)
+AGENT_SSH_KEYS=(/home/ubuntu/keys/107/jenkins-rke.pem /home/ubuntu/keys/134/jenkins-rke.pem)
+AGENT_SSH_USERS=(dkube dkube)
+AGENT_NODE_TYPE=(agent agent)
 
 function white_printf  { printf "\t\033[1;37m$@\033[0m";  }
 function red_printf    { printf "\t\033[31m$@\033[0m";    }                                                               #
