@@ -2,9 +2,9 @@
 
 
 
-MASTER_SSH_KEY=ssh-rsa
-MASTER_SSH_USER=dkube
-MASTER_NODE=192.168.200.125
+MASTER_SSH_KEY=
+MASTER_SSH_USER=
+MASTER_NODE=
 CONFIG_FILE=./config.yaml
 
 #MASTER_SSH_KEY=/home/ubuntu/keys/104/jenkins-rke.pem
