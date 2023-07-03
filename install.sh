@@ -48,3 +48,7 @@ then
 	sudo cp /etc/rancher/rke2/rke2.yaml /home/dkube/.kube/config
 	export KUBECONFIG=~/.kube/config
 fi
+
+################################################
+# authored by buncy.shaddai@oneconvergence.com #
+################################################
