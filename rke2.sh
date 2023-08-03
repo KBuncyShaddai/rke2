@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+KUBERNETES_VERSION=v1.24
 
 MASTER_SSH_KEY=
 MASTER_SSH_USER=
@@ -134,6 +134,9 @@ function uninstallCluster {
   uninstallRKE2
 }
 
+function updateK8sVersion {
+  sed -i 's/kubernetes_version=.*/kubernetes_version=$KUBERNETES_VERSION/g' install.sh
+}
 function drke2 {
   if [ $# -eq 0 ]
   then 
