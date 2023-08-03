@@ -156,6 +156,7 @@ function drke2 {
     uninstallCluster
   fi
 }
+updateK8sVersion
 $@
 
 
